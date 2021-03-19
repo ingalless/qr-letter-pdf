@@ -7,15 +7,15 @@ interface PdfRequest extends NextApiRequest {
     url: string;
     name: string;
     street: string;
-    area: string;
+    state: string;
     city: string;
     postcode: string;
     email: string;
   };
 }
 export default async (req: PdfRequest, res: NextApiResponse) => {
-  const { name, street, area, city, postcode, email } = req.body;
-  const letterhead = [name, street, area, city, postcode].filter((val) => val);
+  const { name, street, state, city, postcode, email } = req.body;
+  const letterhead = [name, street, state, city, postcode].filter((val) => val);
   if (email) {
     letterhead.push("", email);
   }
