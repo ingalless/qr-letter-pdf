@@ -24,12 +24,12 @@ export default function Home() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2">
       <Head>
-        <title>Letter with QR Code</title>
+        <title>Generate a Letter Template with QR Code</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main className="flex flex-col items-center justify-center flex-1 px-8 md:px-20 text-center">
-        <h1 className="text-6xl font-bold">
+        <h1 className="text-3xl lg:text-6xl font-bold">
           Letter with QR Code PDF Generator
         </h1>
 
