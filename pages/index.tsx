@@ -33,7 +33,7 @@ export default function Home() {
           Letter with QR Code PDF Generator
         </h1>
 
-        <p className="mt-3 text-2xl">
+        <p className="mt-3 text-xl lg:text-2xl">
           Get started by entering your details and QR Code URL below
         </p>
 
