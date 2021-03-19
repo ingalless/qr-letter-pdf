@@ -1,14 +1,4 @@
 import Head from "next/head";
-import { useState } from "react";
-
-const defaultLetterhead = `Joe Bloggs,
-123 Imaginary Lane,
-Imaginary Area,
-Imagination City,
-AB1 2CD
-
-mail@example.com`;
-
 interface InputProps {
   name: string;
   label: string;
