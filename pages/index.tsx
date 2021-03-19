@@ -38,7 +38,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="flex flex-col items-center justify-center flex-1 px-20 text-center">
+      <main className="flex flex-col items-center justify-center flex-1 px-8 md:px-20 text-center">
         <h1 className="text-6xl font-bold">
           Letter with QR Code PDF Generator
         </h1>
@@ -49,7 +49,7 @@ export default function Home() {
 
         <form
           target="_blank"
-          className="w-full md:w-96 lg:w-72 space-y-2 mt-3"
+          className="w-full md:w-96 lg:w-72 space-y-2 my-3"
           action="/api/pdf"
           method="POST"
         >
