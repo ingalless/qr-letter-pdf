@@ -2,8 +2,6 @@ import Head from "next/head";
 import dynamic from "next/dynamic";
 import { useState } from "react";
 
-const Document = dynamic(() => import("react-pdf").then((mod) => mod.Document));
-
 export default function Home() {
   const [url, setUrl] = useState<string>();
   return (
