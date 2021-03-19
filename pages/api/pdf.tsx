@@ -15,6 +15,10 @@ interface PdfRequest extends NextApiRequest {
 }
 export default async (req: PdfRequest, res: NextApiResponse) => {
   const { name, street, state, city, postcode, email } = req.body;
+  if (!req.body.url.length) {
+    res.write("Invalid data provided!");
+    res.status(422).end();
+  }
   const letterhead = [name, street, state, city, postcode].filter((val) => val);
   if (email) {
     letterhead.push("", email);
