@@ -1,8 +1,11 @@
 import PDFDocument from "pdfkit";
 import QRCode from "qrcode";
 import type { NextApiRequest, NextApiResponse } from "next";
+import withSession from "../../lib/session";
+import { Session } from "next-iron-session";
 
 interface PdfRequest extends NextApiRequest {
+  session: Session;
   body: {
     url: string;
     name: string;
@@ -11,13 +14,26 @@ interface PdfRequest extends NextApiRequest {
     city: string;
     postcode: string;
     email: string;
+    save: string;
   };
 }
-export default async (req: PdfRequest, res: NextApiResponse) => {
-  const { name, street, state, city, postcode, email } = req.body;
+export default withSession(async (req: PdfRequest, res: NextApiResponse) => {
+  const { name, street, state, city, postcode, email, save } = req.body;
   if (!req.body.url.length) {
     res.write("Invalid data provided!");
     res.status(422).end();
+  }
+  if (save?.toLowerCase() === "on") {
+    req.session.set("name", name);
+    req.session.set("street", street);
+    req.session.set("state", state);
+    req.session.set("city", city);
+    req.session.set("postcode", postcode);
+    req.session.set("email", email);
+    req.session.set("save", true);
+    await req.session.save();
+  } else {
+    req.session.destroy();
   }
   const letterhead = [name, street, state, city, postcode].filter((val) => val);
   if (email) {
@@ -41,4 +57,4 @@ export default async (req: PdfRequest, res: NextApiResponse) => {
     });
   res.status(200);
   doc.end();
-};
+});
