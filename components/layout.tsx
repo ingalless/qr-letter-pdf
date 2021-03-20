@@ -11,7 +11,6 @@ const Layout: React.FC<LayoutProps> = ({
   <div className="flex flex-col items-center justify-center min-h-screen py-2">
     <Head>
       <title>{title}</title>
-      <link rel="icon" href="/favicon.ico" />
     </Head>
     <div className="my-4">
       <Nav />
