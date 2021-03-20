@@ -31,7 +31,7 @@ export default async (req: PdfRequest, res: NextApiResponse) => {
   doc.pipe(res);
   doc
     .fontSize(10)
-    .text(letterhead.join("\n"), 10, 40, {
+    .text(letterhead.join("\n"), 10, 60, {
       align: "right",
     })
     .image(code, doc.page.width - 85, doc.page.height - 85, {
