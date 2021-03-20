@@ -1,6 +1,7 @@
 import { Transition } from "@headlessui/react";
 import { useEffect, useState } from "react";
 import Layout from "../components/layout";
+import { Settings } from "../lib/types";
 interface InputProps {
   name: string;
   label: string;
@@ -38,8 +39,8 @@ const Input = ({
 export default function Home() {
   const [showModal, setShowModal] = useState(false);
   const [link, setLink] = useState("");
-  const [settings, setSettings] = useState({
-    name: "",
+  const [name, setName] = useState("");
+  const [settings, setSettings] = useState<Settings>({
     street: "",
     state: "",
     city: "",
@@ -71,6 +72,45 @@ export default function Home() {
   };
   return (
     <Layout>
+      <Transition
+        className="absolute z-20"
+        show={showModal}
+        enter="transition-all duration-300"
+        enterFrom="opacity-0 -translate-y-10"
+        enterTo="translate-y-10 opacity-100"
+        leave="transition-all duration-100"
+        leaveTo="opacity-0 -translate-y-10"
+        leaveFrom="translate-y-0 opacity-100"
+      >
+        <div className="rounded w-96 max-w-full bg-white shadow-lg mt-1 border border-gray-100 pb-2">
+          <p className="block font-semibold border-b p-2 border-gray-200">
+            Are you sure?
+          </p>
+          <div className="p-4">
+            <p>
+              Ticking this means that we will use cookies and similar methods to
+              remember your preferences. We do not process this data any further
+              than to allow your details to be prepopulated next time.
+            </p>
+          </div>
+          <div className="space-x-2">
+            <button
+              type="button"
+              className="border-gray-200 border p-1 px-2 rounded"
+              onClick={() => handleCheck(false)}
+            >
+              No thanks.
+            </button>
+            <button
+              type="button"
+              onClick={handleConfirm}
+              className="bg-blue-700 p-1 px-2 text-white rounded"
+            >
+              That's fine!
+            </button>
+          </div>
+        </div>
+      </Transition>
       <p className="mt-3 text-xl">Get started by filling in the form below.</p>
 
       <form
@@ -80,7 +120,16 @@ export default function Home() {
         method="POST"
       >
         <p className="text-right w-full">* indicates required</p>
-        <h2 className="text-blue-900 font-bold text-left">Address Details</h2>
+        <Input
+          onChange={(val) => setName(val)}
+          value={name}
+          label="Name"
+          placeholder="Joe Bloggs"
+          name="name"
+        />
+        <h2 className="text-blue-900 font-bold text-left mt-4">
+          Address Details
+        </h2>
         <div className="relative">
           <label className="text-left w-full flex items-center font-semibold text-blue-900">
             <input
@@ -93,54 +142,7 @@ export default function Home() {
             />
             Save address for next time
           </label>
-          <Transition
-            className="absolute z-10"
-            show={showModal}
-            enter="transition-all duration-300"
-            enterFrom="opacity-0 -translate-y-10"
-            enterTo="translate-y-10 opacity-100"
-            leave="transition-all duration-100"
-            leaveTo="opacity-0 -translate-y-10"
-            leaveFrom="translate-y-0 opacity-100"
-          >
-            <div className="rounded w-96 max-w-full bg-white shadow-lg mt-1 border border-gray-100 pb-2">
-              <p className="block font-semibold border-b p-2 border-gray-200">
-                Are you sure?
-              </p>
-              <div className="p-4">
-                <p>
-                  Ticking this means that we will use cookies and similar
-                  methods to remember your preferences. We do not collect this
-                  data any further than to allow your details to be prepopulated
-                  next time.
-                </p>
-              </div>
-              <div className="space-x-2">
-                <button
-                  type="button"
-                  className="border-gray-200 border p-1 px-2 rounded"
-                  onClick={() => handleCheck(false)}
-                >
-                  No thanks.
-                </button>
-                <button
-                  type="button"
-                  onClick={handleConfirm}
-                  className="bg-blue-700 p-1 px-2 text-white rounded"
-                >
-                  That's fine!
-                </button>
-              </div>
-            </div>
-          </Transition>
         </div>
-        <Input
-          onChange={(val) => updateSetting("name", val)}
-          value={settings.name}
-          label="Name"
-          placeholder="Joe Bloggs"
-          name="name"
-        />
         <Input
           onChange={(val) => updateSetting("street", val)}
           value={settings.street}
