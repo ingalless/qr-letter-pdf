@@ -30,6 +30,7 @@ export default async (req: PdfRequest, res: NextApiResponse) => {
   });
   doc.pipe(res);
   doc
+    .fontSize(10)
     .text(letterhead.join("\n"), 10, 40, {
       align: "right",
     })
