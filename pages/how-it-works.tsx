@@ -9,11 +9,15 @@ const About = () => (
         the PDF.
       </p>
       <p>
+        If you tick "Save address for next time" then we will store those in a
+        secure session.
+      </p>
+      <p>
         You can see an example of the PDF that is generated{" "}
         <a
           target="_blank"
           href="/example.pdf"
-          className="text-blue-700 font-bold"
+          className="text-blue-700 font-bold underline"
         >
           here.
         </a>
