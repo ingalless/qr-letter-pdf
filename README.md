@@ -1,23 +1,70 @@
-# Next.js + Tailwind CSS Example
+# PDFs for Letters
 
-This example shows how to use [Tailwind CSS](https://tailwindcss.com/) (v2) with Next.js. It follows the steps outlined in the official [Tailwind docs](https://tailwindcss.com/docs/guides/nextjs).
+A simple tool that generates some useful printable PDFs for handwritten letters.
 
-It uses the new [`@tailwindcss/jit`](https://github.com/tailwindlabs/tailwindcss-jit) engine for Tailwind CSS.
+## PDF Kit Conversions
 
-## Deploy your own
+> Thanks to [this](https://stackoverflow.com/questions/51540144/pdfkit-node-js-measurement-unit) SO post!
 
-Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example):
+- `1pt` is `~0.35mm`, or `~0.04cm`
+- `10pt` is `~3.53mm`, or `~0.35cm`
+- `100pt` is `~35.28mm`, or `~3.53cm`
+- `148.75pt` (quarter page width) is `~52.48mm` or `~5.25cm`
+- `297.5pt` (half page width) is `~104.95mm` or `~10.50cm`
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-tailwindcss&project-name=with-tailwindcss&repository-name=with-tailwindcss)
+### Useful script
 
-## How to use
+```js
+function mmToPt(mm) {
+  return mm * 2.83465;
+}
 
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init) or [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/) to bootstrap the example:
+function cmToPt(cm) {
+  return cm * 28.3465;
+}
 
-```bash
-npx create-next-app --example with-tailwindcss with-tailwindcss-app
-# or
-yarn create next-app --example with-tailwindcss with-tailwindcss-app
+function inchToPt(inch) {
+  return inch * 72;
+}
+
+const units = [1, 2, 3, 5, 10, 15, 20, 25, 50, 100, 150, 250, 500, 1000];
+
+function convert(unit) {
+  let name;
+  let converter;
+
+  switch (unit) {
+    case "mm":
+      name = "millimeters";
+      converter = mmToPt;
+      break;
+
+    case "cm":
+      name = "centimeters";
+      converter = cmToPt;
+      break;
+
+    case "inch":
+      name = "inches";
+      converter = inchToPt;
+      break;
+  }
+
+  console.log(`Convert ${name} to points:`);
+
+  units.forEach((u) => {
+    let converted = converter(u).toFixed(2);
+
+    // get rid of unneeded .00 decimals
+    if (+converted === parseInt(converted, 10)) {
+      converted = +converted;
+    }
+
+    console.log(
+      `${u}${unit} is ${converted}pt, so in doc.text(${converted}, ${converted}, 'Message')`
+    );
+  });
+
+  console.log("--------------------------------------------");
+}
 ```
-
-Deploy it to the cloud with [Vercel](https://vercel.com/new?utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
