@@ -1,4 +1,5 @@
 import { Transition } from "@headlessui/react";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import Layout from "../components/layout";
 import { Settings } from "../lib/types";
@@ -193,6 +194,11 @@ export default function Home() {
         >
           Generate your PDF
         </button>
+        <Link href="/writing-lines">
+          <a className="block mt-2 w-full text-blue-600 font-semibold">
+            Why not get some writing lines?
+          </a>
+        </Link>
       </form>
     </Layout>
   );
