@@ -15,12 +15,12 @@ const WritingLines = () => {
           className="flex flex-col mx-auto items-center w-96 max-w-full"
         >
           <label
-            className="text-left block font-semibold text-blue-900"
+            className="text-left block font-semibold text-blue-900 w-full"
             htmlFor="number"
           >
             Line height
             <input
-              className="text-center block border border-blue-700 rounded p-2"
+              className="text-center block border border-blue-700 rounded p-2 w-full"
               type="number"
               name="height"
               id="height"
@@ -28,7 +28,7 @@ const WritingLines = () => {
               onFocus={(e) => e.target.select()}
             />
           </label>
-          <button className="bg-blue-700 p-1 px-2 text-white rounded mt-4 w-full">
+          <button className="bg-blue-700 p-2 text-white rounded mt-4 w-full">
             Generate your PDF
           </button>
         </form>
