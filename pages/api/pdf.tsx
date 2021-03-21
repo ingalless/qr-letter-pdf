@@ -14,11 +14,27 @@ interface PdfRequest extends NextApiRequest {
     city: string;
     postcode: string;
     email: string;
+    font: string;
+    extra: string;
     save: string;
   };
 }
 export default withSession(async (req: PdfRequest, res: NextApiResponse) => {
-  const { name, street, state, city, postcode, email, save } = req.body;
+  const {
+    name,
+    street,
+    state,
+    city,
+    postcode,
+    email,
+    font = "Helvetica",
+    extra,
+    save,
+  } = req.body;
+  if (!["Courier", "Helvetica", "Times-Roman"].includes(font)) {
+    res.write("Invalid data provided!");
+    res.status(422).end();
+  }
   if (!req.body.url.length) {
     res.write("Invalid data provided!");
     res.status(422).end();
@@ -30,6 +46,7 @@ export default withSession(async (req: PdfRequest, res: NextApiResponse) => {
     req.session.set("city", city);
     req.session.set("postcode", postcode);
     req.session.set("email", email);
+    req.session.set("font", font);
     req.session.set("save", true);
     await req.session.save();
   } else {
@@ -39,6 +56,9 @@ export default withSession(async (req: PdfRequest, res: NextApiResponse) => {
   if (email) {
     letterhead.push("", email);
   }
+  if (extra) {
+    letterhead.push(extra);
+  }
   const code = await QRCode.toDataURL(req.body.url);
   const doc = new PDFDocument({
     size: "A4",
@@ -46,6 +66,7 @@ export default withSession(async (req: PdfRequest, res: NextApiResponse) => {
   });
   doc.pipe(res);
   doc
+    .font(font)
     .fontSize(10)
     .text(letterhead.join("\n"), 10, 60, {
       align: "right",

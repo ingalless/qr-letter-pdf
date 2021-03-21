@@ -4,5 +4,6 @@ export interface Settings {
   city: string;
   postcode: string;
   email: string;
+  font: string;
   save: boolean;
 }

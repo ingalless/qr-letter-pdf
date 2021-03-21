@@ -41,12 +41,15 @@ export default function Home() {
   const [showModal, setShowModal] = useState(false);
   const [link, setLink] = useState("");
   const [name, setName] = useState("");
+  const [extra, setExtra] = useState("");
+  const [advancedOpen, setAdvancedOpen] = useState<boolean>(false);
   const [settings, setSettings] = useState<Settings>({
     street: "",
     state: "",
     city: "",
     postcode: "",
     email: "",
+    font: "",
     save: false,
   });
   useEffect(() => {
@@ -179,6 +182,14 @@ export default function Home() {
           placeholder="mail@example.com"
           name="email"
         />
+        <h2 className="text-blue-900 font-bold text-left mt-4">Extra</h2>
+        <Input
+          onChange={(val) => setExtra(val)}
+          value={extra}
+          label="Extra Line"
+          placeholder="E.g. '01234567890' or 'Sales Assistant'"
+          name="extra"
+        />
         <h2 className="text-blue-900 font-bold text-left mt-4">QR Code</h2>
         <Input
           value={link}
@@ -188,6 +199,41 @@ export default function Home() {
           name="url"
           required
         />
+        <button
+          type="button"
+          className="mt-2 mb-1 flex items-center text-sm"
+          onClick={() => setAdvancedOpen(!advancedOpen)}
+        >
+          Advanced Settings <Toggle open={advancedOpen} />
+        </button>
+        <Transition
+          show={advancedOpen}
+          enter="transition-all duration-300"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
+          leave="transition-all duration-100"
+          leaveTo="opacity-0"
+          leaveFrom="opacity-100"
+        >
+          <div className="rounded border border-gray-300 shadow p-4">
+            <label className="text-left w-full block font-semibold text-blue-900">
+              Font
+              <select
+                onChange={(e) => updateSetting("font", e.target.value)}
+                value={settings.font}
+                defaultValue={settings.font}
+                className="block border border-blue-700 rounded p-2 w-full"
+                name="font"
+                id="font"
+              >
+                <option value="Helvetica">Helvetica (Default)</option>
+                <option value="Courier">Courier</option>
+                <option value="Times-Roman">Times New Roman</option>
+              </select>
+            </label>
+          </div>
+        </Transition>
+
         <button
           className="block w-full bg-blue-700 text-white mt-4 p-2 border rounded border-blue-700"
           type="submit"
@@ -203,3 +249,36 @@ export default function Home() {
     </Layout>
   );
 }
+
+const Toggle = ({ open = false }) =>
+  !open ? (
+    <svg
+      className="w-4 h-4"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M19 9l-7 7-7-7"
+      />
+    </svg>
+  ) : (
+    <svg
+      className="w-4 h-4"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M5 15l7-7 7 7"
+      />
+    </svg>
+  );

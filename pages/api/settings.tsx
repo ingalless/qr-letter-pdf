@@ -14,6 +14,7 @@ export default withSession(
       city: req.session.get("city"),
       postcode: req.session.get("postcode"),
       email: req.session.get("email"),
+      font: req.session.get("font"),
       save: req.session.get("save"),
     };
     res.json(settings);
