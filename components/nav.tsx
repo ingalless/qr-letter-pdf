@@ -21,7 +21,7 @@ const Nav: React.FC = () => {
     <nav className="w-full px-16 mx-auto">
       <ul className="flex justify-center space-x-4">
         {links.map(({ href, text }) => (
-          <li>
+          <li key={href}>
             <Link href={href}>
               <a
                 className={`${isActive(href) ? "text-blue-800 font-bold" : ""}`}

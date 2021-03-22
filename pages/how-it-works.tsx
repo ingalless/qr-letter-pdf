@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Layout from "../components/layout";
+import { Settings } from "../lib/types";
 
 enum STATES {
   IDLE,
@@ -8,6 +9,14 @@ enum STATES {
 }
 const About = () => {
   const [state, setState] = useState<STATES>(STATES.IDLE);
+  const [settings, setSettings] = useState<Settings>();
+  useEffect(() => {
+    fetch("/api/settings")
+      .then((response) => response.json())
+      .then((json) => {
+        setSettings(json as any);
+      });
+  }, []);
 
   const deleteSession = async () => {
     setState(STATES.DESTROYING);
@@ -25,6 +34,12 @@ const About = () => {
         <p>
           If you tick "Save address for next time" then we will store those in a
           secure session.{" "}
+        </p>
+        <p>
+          Data stored in your secure session:
+          <pre className="text-left block p-1 border border-gray-400 bg-gray-100 rounded">
+            {JSON.stringify(settings, null, 4)}
+          </pre>
         </p>
         <button
           onClick={deleteSession}
