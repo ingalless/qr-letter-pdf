@@ -6,11 +6,11 @@ interface Request extends NextApiRequest {
 }
 const margin = 40;
 export default async (req: Request, res: NextApiResponse) => {
-  if (!req.query.height || !Number.isFinite(req.query.height)) {
+  const height = Number(req.query.height);
+  if (!req.query.height || !isFinite(height)) {
     res.write("Invalid data provided!");
     return res.status(422).end();
   }
-  const height = Number(req.query.height);
   const division = height / 3;
   const [divisionOne, divisionTwo] = [division, division + division];
   const doc = new PDFDocument({
