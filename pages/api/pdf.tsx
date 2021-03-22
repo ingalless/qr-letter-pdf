@@ -37,7 +37,7 @@ export default withSession(async (req: PdfRequest, res: NextApiResponse) => {
   // }
   if (!req.body.url.length) {
     res.write("Invalid data provided!");
-    res.status(422).end();
+    return res.status(422).end();
   }
   if (save?.toLowerCase() === "on") {
     req.session.set("name", name);

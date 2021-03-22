@@ -1,19 +1,18 @@
 import PDFDocument from "pdfkit";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { margins } from "pdfkit/js/page";
 
 interface Request extends NextApiRequest {
   query: { height: string };
 }
 const margin = 40;
 export default async (req: Request, res: NextApiResponse) => {
+  if (!req.query.height || !Number.isFinite(req.query.height)) {
+    res.write("Invalid data provided!");
+    return res.status(422).end();
+  }
   const height = Number(req.query.height);
   const division = height / 3;
-  const [divisionOne, divisionTwo, divisionThree] = [
-    division,
-    division + division,
-    division + division + division,
-  ];
+  const [divisionOne, divisionTwo] = [division, division + division];
   const doc = new PDFDocument({
     size: "A4",
     margin,
