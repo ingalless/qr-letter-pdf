@@ -31,10 +31,10 @@ export default withSession(async (req: PdfRequest, res: NextApiResponse) => {
     extra,
     save,
   } = req.body;
-  if (!["Courier", "Helvetica", "Times-Roman"].includes(font)) {
-    res.write("Invalid data provided!");
-    res.status(422).end();
-  }
+  // if (!["Courier", "Helvetica", "Times-Roman"].includes(font)) {
+  //   res.write("Invalid data provided!");
+  //   res.status(422).end();
+  // }
   if (!req.body.url.length) {
     res.write("Invalid data provided!");
     res.status(422).end();
@@ -66,7 +66,6 @@ export default withSession(async (req: PdfRequest, res: NextApiResponse) => {
   });
   doc.pipe(res);
   doc
-    .font(font)
     .fontSize(10)
     .text(letterhead.join("\n"), 10, 60, {
       align: "right",

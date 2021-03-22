@@ -182,11 +182,11 @@ export default function Home() {
           placeholder="mail@example.com"
           name="email"
         />
-        <h2 className="text-blue-900 font-bold text-left mt-4">Extra</h2>
+        <h2 className="text-blue-900 font-bold text-left mt-4">Extra Info</h2>
         <Input
           onChange={(val) => setExtra(val)}
           value={extra}
-          label="Extra Line"
+          label="Extra Line (Optional)"
           placeholder="E.g. '01234567890' or 'Sales Assistant'"
           name="extra"
         />
@@ -199,40 +199,42 @@ export default function Home() {
           name="url"
           required
         />
-        <button
-          type="button"
-          className="mt-2 mb-1 flex items-center text-sm"
-          onClick={() => setAdvancedOpen(!advancedOpen)}
-        >
-          Advanced Settings <Toggle open={advancedOpen} />
-        </button>
-        <Transition
-          show={advancedOpen}
-          enter="transition-all duration-300"
-          enterFrom="opacity-0"
-          enterTo="opacity-100"
-          leave="transition-all duration-100"
-          leaveTo="opacity-0"
-          leaveFrom="opacity-100"
-        >
-          <div className="rounded border border-gray-300 shadow p-4">
-            <label className="text-left w-full block font-semibold text-blue-900">
-              Font
-              <select
-                onChange={(e) => updateSetting("font", e.target.value)}
-                value={settings.font}
-                defaultValue={settings.font}
-                className="block border border-blue-700 rounded p-2 w-full"
-                name="font"
-                id="font"
-              >
-                <option value="Helvetica">Helvetica (Default)</option>
-                <option value="Courier">Courier</option>
-                <option value="Times-Roman">Times New Roman</option>
-              </select>
-            </label>
-          </div>
-        </Transition>
+        <div className="hidden">
+          <button
+            type="button"
+            className="mt-2 mb-1 flex items-center text-sm"
+            onClick={() => setAdvancedOpen(!advancedOpen)}
+          >
+            Advanced Settings <Toggle open={advancedOpen} />
+          </button>
+          <Transition
+            show={advancedOpen}
+            enter="transition-all duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="transition-all duration-100"
+            leaveTo="opacity-0"
+            leaveFrom="opacity-100"
+          >
+            <div className="rounded border border-gray-300 shadow p-4">
+              <label className="text-left w-full block font-semibold text-blue-900">
+                Font
+                <select
+                  onChange={(e) => updateSetting("font", e.target.value)}
+                  value={settings.font}
+                  defaultValue={settings.font}
+                  className="block border border-blue-700 rounded p-2 w-full"
+                  name="font"
+                  id="font"
+                >
+                  <option value="Helvetica">Helvetica (Default)</option>
+                  <option value="Courier">Courier</option>
+                  <option value="Times-Roman">Times New Roman</option>
+                </select>
+              </label>
+            </div>
+          </Transition>
+        </div>
 
         <button
           className="block w-full bg-blue-700 text-white mt-4 p-2 border rounded border-blue-700"
