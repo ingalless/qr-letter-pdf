@@ -10,17 +10,19 @@ enum STATES {
 const About = () => {
   const [state, setState] = useState<STATES>(STATES.IDLE);
   const [settings, setSettings] = useState<Settings>();
+  const fetchSession = async () => {
+    const response = await fetch("/api/settings");
+    const json = await response.json();
+    setSettings(json as any);
+  };
   useEffect(() => {
-    fetch("/api/settings")
-      .then((response) => response.json())
-      .then((json) => {
-        setSettings(json as any);
-      });
+    fetchSession();
   }, []);
 
   const deleteSession = async () => {
     setState(STATES.DESTROYING);
     await fetch("/api/destroy-session");
+    await fetchSession();
     setState(STATES.SUCCESS);
   };
   return (
@@ -34,12 +36,6 @@ const About = () => {
         <p>
           If you tick "Save address for next time" then we will store those in a
           secure session.{" "}
-        </p>
-        <p>
-          Data stored in your secure session:
-          <pre className="text-left block p-1 border border-gray-400 bg-gray-100 rounded">
-            {JSON.stringify(settings, null, 4)}
-          </pre>
         </p>
         <button
           onClick={deleteSession}
@@ -67,6 +63,12 @@ const About = () => {
           >
             here.
           </a>
+        </p>
+        <p>
+          Data stored in your secure session:
+          <pre className="text-left block p-1 border border-gray-400 bg-gray-100 rounded">
+            {JSON.stringify(settings, null, 4)}
+          </pre>
         </p>
       </div>
     </Layout>
