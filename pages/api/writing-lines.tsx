@@ -17,6 +17,10 @@ export default async (req: Request, res: NextApiResponse) => {
     size: "A4",
     margin,
   });
+  if (height < 0 || height > doc.page.height) {
+    res.write("Too small/large a height provided");
+    return res.status(422).end();
+  }
   doc.pipe(res);
   for (
     let i = doc.page.margins.top;

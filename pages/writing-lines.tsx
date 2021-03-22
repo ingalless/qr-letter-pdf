@@ -20,6 +20,7 @@ const WritingLines = () => {
           >
             Line height
             <input
+              min={1}
               className="text-center block border border-blue-700 rounded p-2 w-full"
               type="number"
               name="height"
