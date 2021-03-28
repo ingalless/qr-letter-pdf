@@ -1,4 +1,5 @@
 import Head from "next/head";
+import Image from "next/image";
 import Nav from "./nav";
 
 interface LayoutProps {
@@ -19,14 +20,17 @@ const Layout: React.FC<LayoutProps> = ({
       <h1 className="text-3xl font-bold">{title}</h1>
       {children}
     </main>
-    <footer className="flex flex-col text-center items-center justify-center w-full h-24 border-t text-xs font-semibold tracking-tight text-gray-700">
-      {title}
-      <pre className="block bg-gray-50 border border-gray-400 rounded-sm font-mono font-small px-1 mt-1">
+    <footer className="flex flex-col text-center items-center justify-evenly w-full h-24 border-t text-xs font-semibold tracking-tight text-gray-700">
+      <span className="block">{title}</span>
+      <pre className="block bg-gray-50 border border-gray-400 rounded-sm font-mono font-small px-1">
         &lt;/&gt; by{" "}
         <a className="text-blue-700 underline" href="https://ingalless.com">
           Jonny
         </a>
       </pre>
+      <a href="https://github.com/ingalless/qr-letter-pdf" className="block">
+        <Image src="/github.png" width={24} height={24} />
+      </a>
     </footer>
   </div>
 );
