@@ -76,45 +76,6 @@ export default function Home() {
   };
   return (
     <Layout>
-      <Transition
-        className="absolute z-20"
-        show={showModal}
-        enter="transition-all duration-300"
-        enterFrom="opacity-0 -translate-y-10"
-        enterTo="translate-y-10 opacity-100"
-        leave="transition-all duration-100"
-        leaveTo="opacity-0 -translate-y-10"
-        leaveFrom="translate-y-0 opacity-100"
-      >
-        <div className="rounded w-96 max-w-full bg-white shadow-lg mt-1 border border-gray-100 pb-2">
-          <p className="block font-semibold border-b p-2 border-gray-200">
-            Are you sure?
-          </p>
-          <div className="p-4">
-            <p>
-              Ticking this means that we will use cookies and similar methods to
-              remember your preferences. We do not process this data any further
-              than to allow your details to be prepopulated next time.
-            </p>
-          </div>
-          <div className="space-x-2">
-            <button
-              type="button"
-              className="border-gray-200 border p-1 px-2 rounded"
-              onClick={() => handleCheck(false)}
-            >
-              No thanks.
-            </button>
-            <button
-              type="button"
-              onClick={handleConfirm}
-              className="bg-blue-700 p-1 px-2 text-white rounded"
-            >
-              That's fine!
-            </button>
-          </div>
-        </div>
-      </Transition>
       <p className="mt-3 text-xl">Get started by filling in the form below.</p>
 
       <form
@@ -123,7 +84,6 @@ export default function Home() {
         action="/api/pdf"
         method="POST"
       >
-        <p className="text-right w-full">* indicates required</p>
         <Input
           onChange={(val) => setName(val)}
           value={name}
@@ -146,6 +106,11 @@ export default function Home() {
             />
             Save address for next time
           </label>
+          <Modal
+            isOpen={showModal}
+            onOk={handleConfirm}
+            onCancel={() => handleCheck(false)}
+          />
         </div>
         <Input
           onChange={(val) => updateSetting("street", val)}
@@ -197,7 +162,6 @@ export default function Home() {
           label="QR Code URL"
           placeholder="https://google.com"
           name="url"
-          required
         />
         <div className="hidden">
           <button
@@ -251,6 +215,53 @@ export default function Home() {
     </Layout>
   );
 }
+
+interface ModalProps {
+  isOpen: boolean;
+  onCancel: () => void;
+  onOk: () => void;
+}
+const Modal: React.FC<ModalProps> = ({ isOpen, onCancel, onOk }) => (
+  <Transition
+    className="absolute z-10"
+    show={isOpen}
+    enter="transition-all duration-300"
+    enterFrom="opacity-0 -translate-y-10"
+    enterTo="translate-y-10 opacity-100"
+    leave="transition-all duration-100"
+    leaveTo="opacity-0 -translate-y-10"
+    leaveFrom="translate-y-0 opacity-100"
+  >
+    <div className="rounded w-96 max-w-full bg-white shadow-2xl mt-1 border border-gray-100 pb-2 z-20">
+      <p className="block font-semibold border-b p-2 border-gray-200">
+        Are you sure?
+      </p>
+      <div className="p-4">
+        <p>
+          Ticking this means that we will use cookies and similar methods to
+          remember your preferences. We do not process this data any further
+          than to allow your details to be prepopulated next time.
+        </p>
+      </div>
+      <div className="space-x-2">
+        <button
+          type="button"
+          className="border-gray-200 border p-1 px-2 rounded"
+          onClick={onCancel}
+        >
+          No thanks.
+        </button>
+        <button
+          type="button"
+          onClick={onOk}
+          className="bg-blue-700 p-1 px-2 text-white rounded"
+        >
+          That's fine!
+        </button>
+      </div>
+    </div>
+  </Transition>
+);
 
 const Toggle = ({ open = false }) =>
   !open ? (

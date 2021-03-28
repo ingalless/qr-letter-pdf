@@ -30,15 +30,18 @@ export default withSession(async (req: PdfRequest, res: NextApiResponse) => {
     font = "Helvetica",
     extra,
     save,
+    url,
   } = req.body;
+  if (
+    [name, street, state, city, postcode, email, url].filter(Boolean).length < 1
+  ) {
+    res.write("Invalid data provided! You must fill in at least 1 field");
+    return res.status(422).end();
+  }
   // if (!["Courier", "Helvetica", "Times-Roman"].includes(font)) {
   //   res.write("Invalid data provided!");
   //   res.status(422).end();
   // }
-  if (!req.body.url.length) {
-    res.write("Invalid data provided!");
-    return res.status(422).end();
-  }
   if (save?.toLowerCase() === "on") {
     req.session.set("name", name);
     req.session.set("street", street);
@@ -59,22 +62,22 @@ export default withSession(async (req: PdfRequest, res: NextApiResponse) => {
   if (extra) {
     letterhead.push(extra);
   }
-  const code = await QRCode.toDataURL(req.body.url);
   const doc = new PDFDocument({
     size: "A4",
     margin: 20,
   });
   doc.pipe(res);
-  doc
-    .fontSize(10)
-    .text(letterhead.join("\n"), 10, 60, {
-      align: "right",
-    })
-    .image(code, doc.page.width - 85, doc.page.height - 85, {
+  doc.fontSize(10).text(letterhead.join("\n"), 10, 60, {
+    align: "right",
+  });
+  if (url) {
+    const code = await QRCode.toDataURL(url);
+    doc.image(code, doc.page.width - 85, doc.page.height - 85, {
       width: 75,
       align: "right",
       valign: "bottom",
     });
+  }
   res.status(200);
   doc.end();
 });
