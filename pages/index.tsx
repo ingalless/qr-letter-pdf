@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import Layout from "../components/layout";
 import { Settings } from "../lib/types";
+import QRCode from "qrcode";
 interface InputProps {
   name: string;
   label: string;
@@ -38,6 +39,7 @@ const Input = ({
 };
 
 export default function Home() {
+  const [dataUrl, setDataUrl] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [link, setLink] = useState("");
   const [name, setName] = useState("");
@@ -52,6 +54,15 @@ export default function Home() {
     font: "",
     save: false,
   });
+
+  useEffect(() => {
+    if (!link) {
+      setDataUrl("");
+      return;
+    }
+    QRCode.toDataURL(link).then(setDataUrl);
+  }, [link, dataUrl, setDataUrl]);
+
   useEffect(() => {
     fetch("/api/settings")
       .then((response) => response.json())
@@ -163,6 +174,15 @@ export default function Home() {
           placeholder="https://google.com"
           name="url"
         />
+        <div className="mx-auto">
+          {dataUrl && (
+            <img
+              className="mx-auto h-32"
+              src={dataUrl}
+              alt={`QR Code for ${link}`}
+            />
+          )}
+        </div>
         <div className="hidden">
           <button
             type="button"
