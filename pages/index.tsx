@@ -1,9 +1,30 @@
 import { Transition } from "@headlessui/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import Layout from "../components/layout";
-import { Settings } from "../lib/types";
 import QRCode from "qrcode";
+import { LoremIpsum } from "lorem-ipsum";
+
+import { Settings } from "../lib/types";
+import Layout from "../components/layout";
+
+const lorem = new LoremIpsum({
+  sentencesPerParagraph: {
+    max: 8,
+    min: 4,
+  },
+  wordsPerSentence: {
+    max: 16,
+    min: 4,
+  },
+});
+
+const placeholderContent = `Dear sir/madam
+
+${lorem.generateParagraphs(2).replace(/\n/g, "\n\n")}
+
+Kind regards,
+John Doe`;
+
 interface InputProps {
   name: string;
   label: string;
@@ -38,12 +59,39 @@ const Input = ({
   );
 };
 
+const TextArea = ({
+  name,
+  label,
+  placeholder,
+  required = false,
+  value,
+  onChange,
+}: InputProps) => {
+  return (
+    <label className="text-left w-full block font-semibold text-blue-900">
+      {label}
+      {required && "*"}
+      <textarea
+        onChange={(e) => onChange(e.target.value)}
+        value={value}
+        placeholder={placeholder}
+        name={name}
+        id={name}
+        className="block border border-blue-700 rounded p-2 w-full"
+        required={required}
+        rows={20}
+      />
+    </label>
+  );
+};
+
 export default function Home() {
   const [dataUrl, setDataUrl] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [link, setLink] = useState("");
   const [name, setName] = useState("");
   const [extra, setExtra] = useState("");
+  const [content, setContent] = useState("");
   const [advancedOpen, setAdvancedOpen] = useState<boolean>(false);
   const [settings, setSettings] = useState<Settings>({
     street: "",
@@ -91,7 +139,7 @@ export default function Home() {
 
       <form
         target="_blank"
-        className="w-full md:w-96 lg:w-72 my-3"
+        className="w-full my-3"
         action="/api/pdf"
         method="POST"
       >
@@ -183,7 +231,7 @@ export default function Home() {
             />
           )}
         </div>
-        <div className="hidden">
+        <div className="block">
           <button
             type="button"
             className="mt-2 mb-1 flex items-center text-sm"
@@ -216,6 +264,18 @@ export default function Home() {
                   <option value="Times-Roman">Times New Roman</option>
                 </select>
               </label>
+
+              <TextArea
+                name="content"
+                label="Content"
+                value={content}
+                onChange={setContent}
+                placeholder={placeholderContent}
+              />
+              <p className="text-sm text-gray-600">
+                Psst, use the drag handle on the bottom right to resize the
+                above box!
+              </p>
             </div>
           </Transition>
         </div>

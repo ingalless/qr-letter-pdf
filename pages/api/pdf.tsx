@@ -15,6 +15,7 @@ interface PdfRequest extends NextApiRequest {
     postcode: string;
     email: string;
     font: string;
+    content: string;
     extra: string;
     save: string;
   };
@@ -31,6 +32,7 @@ export default withSession(async (req: PdfRequest, res: NextApiResponse) => {
     extra,
     save,
     url,
+    content,
   } = req.body;
   if (
     [name, street, state, city, postcode, email, url].filter(Boolean).length < 1
@@ -38,10 +40,10 @@ export default withSession(async (req: PdfRequest, res: NextApiResponse) => {
     res.write("Invalid data provided! You must fill in at least 1 field");
     return res.status(422).end();
   }
-  // if (!["Courier", "Helvetica", "Times-Roman"].includes(font)) {
-  //   res.write("Invalid data provided!");
-  //   res.status(422).end();
-  // }
+  if (!["Courier", "Helvetica", "Times-Roman"].includes(font)) {
+    res.write("Invalid data provided!");
+    res.status(422).end();
+  }
   if (save?.toLowerCase() === "on") {
     req.session.set("name", name);
     req.session.set("street", street);
@@ -64,12 +66,31 @@ export default withSession(async (req: PdfRequest, res: NextApiResponse) => {
   }
   const doc = new PDFDocument({
     size: "A4",
-    margin: 20,
+    margin: 40,
   });
   doc.pipe(res);
-  doc.fontSize(10).text(letterhead.join("\n"), 10, 60, {
-    align: "right",
-  });
+  doc.font(font);
+  doc
+    .fontSize(12)
+    .text(letterhead.join("\n"), 10, 60, {
+      align: "right",
+    })
+    .moveDown(4);
+
+  if (content) {
+    doc
+      .fontSize(12)
+      .text(
+        content.replace(/\r\n|\r/g, "\n"),
+        doc.page.margins.left,
+        undefined,
+        {
+          lineGap: 1,
+          paragraphGap: 2,
+        }
+      );
+  }
+
   if (url) {
     const code = await QRCode.toDataURL(url);
     doc.image(code, doc.page.width - 85, doc.page.height - 85, {
