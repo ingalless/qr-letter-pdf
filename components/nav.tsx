@@ -13,6 +13,10 @@ const links: { href: string; text: string }[] = [
     href: "/how-it-works",
     text: "How it Works",
   },
+  {
+    href: "/whats-new",
+    text: "What's New?",
+  },
 ];
 const Nav: React.FC = () => {
   const router = useRouter();

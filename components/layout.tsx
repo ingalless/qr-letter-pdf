@@ -1,5 +1,6 @@
 import Head from "next/head";
 import Image from "next/image";
+import Link from "next/link";
 import Nav from "./nav";
 
 interface LayoutProps {
@@ -16,7 +17,7 @@ const Layout: React.FC<LayoutProps> = ({
     <div className="my-4">
       <Nav />
     </div>
-    <main className="flex flex-col items-center justify-center flex-1 px-8 md:px-20 text-center">
+    <main className="flex flex-col items-center flex-1 px-8 md:px-20 text-center">
       <h1 className="text-3xl font-bold">{title}</h1>
       {children}
     </main>
