@@ -2,6 +2,27 @@
 
 A simple tool that generates some useful printable PDFs for handwritten letters.
 
+## V2 Crude Design Document
+
+### Why?
+
+Make it possible to save letters to reuse next time
+
+### How?
+
+LocalStorage to store and retrieve letter data. No ability to sync between browsers, but that's better for data protection.
+
+### What needs to happen?
+
+An \* represents a nice to have.
+
+- [ ] Be able to save a letter to local storage
+- [ ] Be able to update a letter and save it to local storage
+- [ ] Show a preview of the letter PDF\*
+- [ ] Be able to delete a letter from your collection
+- [ ] Market as a general purpose solution?
+
+
 ## PDF Kit Conversions
 
 > Thanks to [this](https://stackoverflow.com/questions/51540144/pdfkit-node-js-measurement-unit) SO post!
